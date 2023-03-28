@@ -1,4 +1,4 @@
-name: Strapi_practice
+name: Actions_practice
 run-name: ${{ github.actor }} is trying to pass hexlet_course 🚀
 on: [push]
 jobs:
@@ -6,8 +6,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3 
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'npm'
       - run: make setup
       - run: make test
       - run: make lint 
-
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Run Snyl to check for vulnerabilities
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
